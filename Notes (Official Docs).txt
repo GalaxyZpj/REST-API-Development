@@ -1,0 +1,68 @@
+# Tutorial 1: Serializers:-
+    Make sure you are in a virtual environment to isolate the dependencies used by our project from that on the system.
+        # python3 -m venv env           // this generates the virtual environment files
+        # source env/bin/activate       // this activates the virtual environment
+    To deactivate the environment:
+        # deactivate
+    
+    Install the required dependencies:
+        # pip install django
+        # pip install djangorestframework
+    
+    Start your project and app:
+        # django-admin startproject myproject
+        # cd myproject
+        # python3 manage.py startapp myapp
+    Add the created app and the rest_framework declaration in settings.py of the app:
+        ###
+        INSTALLED_APPS = [
+            ...
+            'rest_framework',
+            'myapp.apps.MyappConfig',
+        ]
+        ###
+    
+    Create a model (inside models.py of the app folder) to work with.
+
+    Adding Serializers:
+        Serializers makes it easier to transform the data into formats such as json.
+        In the app folder, create a file named 'serializers.py', inside that file:
+            ###
+            from rest_framework import serializers
+            from snippets
+            class MyappSerializer(serializers.Serializer):
+                ...
+                (fields for the class)
+
+                def create(self, validated_data):
+                    return Myapp.objects.create(**validated_data)
+
+                def update(self, instance, validated_data):
+                    instance.field = validated_data.get('field', instance.field)
+                    ...
+                    instance.save()
+                    return instance
+            ###
+    Creating a ModelSerializer class instead of Serializer:
+        ###
+        class MyappSerializer(serializers.ModelSerializer):
+            class Meta:
+                model = Snippet
+                fields = ['id', 'title', 'code', 'linenos', 'language', 'style']        //example
+        ###
+        ModelSerializer classes are a shortcut for creating Serializer classes.
+    Creating Views:
+        There are 3 methods for creating views:
+            Funcion based views (using @api_view decorator)
+            Class bases views (using APIView as inherited class)
+            Mixin views (uses different ModelMixins)
+            Generic class-based views
+    
+
+
+    'ENGINE': 'django.db.backends.postgresql',
+        'NAME': 'd7hu125cjrennk',
+        'HOST': 'ec2-54-235-86-101.compute-1.amazonaws.com',
+        'USER': 'smbedhuyknfsgt',
+        'PASSWORD': '5963af81d89a07469f1df66bab1bc0ec6625d610e7bc1390b209117b4a3b87a9',
+        'PORT': 5432

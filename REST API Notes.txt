@@ -1,1 +1,60 @@
 Creating a REST API using Django REST Framework:-
+
+-> Setting our Docker Image File:-
+    -Creating a Dockerfile:
+        ###
+        FROM python:3.7-alpine                                  // includes the base Dockerfile
+        MAINTAINER London App Developer Ltd.                    // specifies the owner of the image file
+
+        ENV PYTHONUNBUFFERED 1                                  // Tells python not to buffer the output
+
+        # Install dependencies
+        COPY ./requirements.txt /requirements.txt               // copies requirements.txt from local directory to image
+        RUN pip install -r /requirements.txt                    // install requirements as mensioned in requirements.txt
+
+        # Setup directory structure
+        RUN mkdir /app                                          // creates a folder named app
+        WORKDIR /app                                            // cd into that folder
+        COPY ./app/ /app                                        // copies app folder on the local machine to the image
+
+        RUN adduser -D user                                     // creates a user that runs application using docker, -D specifies create user for running applications only
+        USER user                                               // switches to 'user'
+        ###
+
+    -Creating requirements.txt file:
+        ###
+        Django>=2.1.3, <2.2.0                                   // Specifes to install django, with version greater than and less than specified
+        djangorestframework>=3.9.0, <3.10.0
+        ###
+
+    -Create an 'app' folder.
+
+    -cd into the directory which has the Dockerfile, and run the following in Terminal:
+        # docker build .            // this builds the docker image
+    -Creating docker compose file:
+        
+        Create a file in root named 'docker-compose.yml'.       // it contains the configuration for the services used in our docker application
+        ###
+        version: "3"                                                    // specifies the docker compose version
+
+        services:                                                       // specifies services of our app
+            app:
+                build: 
+                    context: .                                          // build from the root directory
+                ports: 
+                    - "8000:8000"
+                volumes:                                                // will automatically update the docker image when the app is updated
+                    - ./app:/app
+                command: >                                              // command to be run on building the compose
+                    sh -c "python manage.py runserver 0.0.0.0:8000"
+        ###
+    -Creating the django app inside the docker project:
+        # docker-compose run app sh -c "django-admin startproject app ."
+        This runs the command on the linux image hosted on the docker image file.
+
+-> Setting up TravisCI:-
+    TravisCI is used to automate the testing of our API.
+
+    Creating a TravisCI configuration file:
+        Create 'travis.yml' in the root of our project folder.
+        

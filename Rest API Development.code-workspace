@@ -1,0 +1,16 @@
+{
+	"folders": [
+		{
+			"path": "."
+		},
+		{
+			"path": "/Users/pranavjain/Github/Front-end to Back-end Test"
+		},
+		{
+			"path": "/Users/pranavjain/Github/REST APIs/Authentication/auth_api"
+		}
+	],
+	"settings": {
+		"git.ignoreLimitWarning": true
+	}
+}
